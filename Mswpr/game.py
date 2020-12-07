@@ -1,6 +1,9 @@
-import time, sys, os, json
+import time, sys, os, json, pathlib
 import pygame
 from board import Board
+
+main_dir = pathlib.Path(__file__).parent.absolute()
+
 pygame.init()
 
 tiles = []
@@ -100,13 +103,13 @@ class Game:
         self.cols = cols
         self.bombs = bombs
         # Import font
-        self.font = pygame.font.Font(os.path.join(os.path.curdir, 'res', 'VCR_OSD_MONO.ttf'), round(size/2))
-        self.font_big = pygame.font.Font(os.path.join(os.path.curdir, 'res', 'VCR_OSD_MONO.ttf'), round(size))
+        self.font = pygame.font.Font(os.path.join(main_dir, 'res', 'VCR_OSD_MONO.ttf'), round(size/2))
+        self.font_big = pygame.font.Font(os.path.join(main_dir, 'res', 'VCR_OSD_MONO.ttf'), round(size))
         # Main loop
         self.playing = True
         self.time = 0
         # Set icon
-        pygame.display.set_icon(pygame.image.load(os.path.join(os.path.curdir, 'res', '64x64-ico.png')))
+        pygame.display.set_icon(pygame.image.load(os.path.join(main_dir, 'res', '64x64-ico.png')))
         self.mainloop()
 
     def generate(self):
@@ -182,7 +185,7 @@ class Game:
 
 if __name__ == '__main__':
     if len(sys.argv) == 6:
-        with open(os.path.join(os.path.curdir, 'themes', sys.argv[1]), 'r') as f:
+        with open(os.path.join(main_dir, 'themes', sys.argv[1]), 'r') as f:
             json_theme = json.loads(f.read())
 
             # Colors

@@ -1,10 +1,12 @@
-import sys, os, subprocess
+import sys, os, subprocess, pathlib
 from os import listdir
 from os.path import isfile, join
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QGridLayout, QApplication, QMainWindow, QGroupBox, QRadioButton, QLabel, QSlider, QComboBox, QPushButton
+
+main_dir = pathlib.Path(__file__).parent.absolute()
 
 class Launcher():
     def __init__(self):
@@ -25,7 +27,7 @@ class Launcher():
         play_button.clicked.connect(self.launch_game)
         grid.addWidget(play_button, 3, 0)
 
-        self.win.setWindowIcon(QIcon(os.path.join(os.path.curdir, 'res', '64x64-ico.png')))
+        self.win.setWindowIcon(QIcon(os.path.join(main_dir, 'res', '64x64-ico.png')))
         self.win.setFixedSize(0, 0)
         self.widget.setLayout(grid)
         self.win.show()
@@ -34,7 +36,7 @@ class Launcher():
     def widget_logo(self):
         pic = QLabel()
         pic.setStyleSheet('padding: 10px;')
-        pic.setPixmap(QPixmap(os.path.join(os.path.curdir, 'res', 'logo.png')))
+        pic.setPixmap(QPixmap(os.path.join(main_dir, 'res', 'logo.png')))
         return pic
 
     def widget_modes_group(self):
@@ -68,7 +70,7 @@ class Launcher():
         setting2_label = QLabel('Select theme')
 
         self.themes_dropdown = QComboBox()
-        [self.themes_dropdown.addItem(f.replace('.json', '')) for f in listdir('themes') if isfile(join('themes', f))]
+        [self.themes_dropdown.addItem(f.replace('.json', '')) for f in listdir(os.path.join(main_dir, 'themes')) if isfile(join(os.path.join(main_dir, 'themes'), f))]
 
         grid = QGridLayout()
         grid.addWidget(setting1_label, 0, 0)
@@ -90,14 +92,14 @@ class Launcher():
             self.mode = ['Expert', '30', '16', '99']
 
         self.save_settings()
-        subprocess.call([sys.executable, os.path.join(os.path.curdir, 'game.py'),
+        subprocess.call([sys.executable, os.path.join(main_dir, 'game.py'),
          self.themes_dropdown.currentText() + '.json', 
          self.size_label.text(), 
          self.mode[1], self.mode[2], self.mode[3]])
         self.win.show()
     
     def save_settings(self):
-        with open(os.path.join(os.path.curdir, 'settings'), 'w') as f:
+        with open(os.path.join(main_dir, 'settings'), 'w') as f:
             settings = self.themes_dropdown.currentText()
             settings += '\n' + self.size_label.text()
             settings += '\n' + self.mode[0]
@@ -105,7 +107,7 @@ class Launcher():
 
     def load_settings(self):
         try:
-            with open(os.path.join(os.path.curdir, 'settings'), 'r') as f:
+            with open(os.path.join(main_dir, 'settings'), 'r') as f:
                 settings = f.read().splitlines()
         except:
             settings = None
