@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, subprocess
 from os import listdir
 from os.path import isfile, join
 from PyQt5 import QtWidgets
@@ -83,14 +83,17 @@ class Launcher():
         self.win.hide()
 
         if self.beginner_radio.isChecked() == True:
-            self.mode = ['Beginner', '8 8 10']
+            self.mode = ['Beginner', '8', '8', '10']
         elif self.intermediate_radio.isChecked() == True:
-            self.mode = ['Intermediate', '16 16 40']
+            self.mode = ['Intermediate', '16', '16', '40']
         else:
-            self.mode = ['Expert', '30 16 99']
+            self.mode = ['Expert', '30', '16', '99']
 
         self.save_settings()
-        os.system(os.path.join(os.path.curdir, 'game.py') + ' ' + self.themes_dropdown.currentText() + ' ' + self.size_label.text() + ' ' + self.mode[1])
+        subprocess.call([sys.executable, os.path.join(os.path.curdir, 'game.py'),
+         self.themes_dropdown.currentText(), 
+         self.size_label.text(), 
+         self.mode[1], self.mode[2], self.mode[3]])
         self.win.show()
     
     def save_settings(self):
