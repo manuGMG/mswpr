@@ -68,7 +68,7 @@ class Launcher():
         setting2_label = QLabel('Select theme')
 
         self.themes_dropdown = QComboBox()
-        [self.themes_dropdown.addItem(f) for f in listdir('themes') if isfile(join('themes', f))]
+        [self.themes_dropdown.addItem(f.replace('.json', '')) for f in listdir('themes') if isfile(join('themes', f))]
 
         grid = QGridLayout()
         grid.addWidget(setting1_label, 0, 0)
@@ -91,7 +91,7 @@ class Launcher():
 
         self.save_settings()
         subprocess.call([sys.executable, os.path.join(os.path.curdir, 'game.py'),
-         self.themes_dropdown.currentText(), 
+         self.themes_dropdown.currentText() + '.json', 
          self.size_label.text(), 
          self.mode[1], self.mode[2], self.mode[3]])
         self.win.show()
