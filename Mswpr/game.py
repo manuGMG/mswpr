@@ -203,4 +203,4 @@ if __name__ == '__main__':
             bombs=int(sys.argv[5]))
     else:
         print('Mswpr')
-        print('Usage: game.py [theme] [block size (px)] [rows] [columns] [bombs]')
+        print('Usage: %s [theme] [block size (px)] [rows] [columns] [bombs]' % os.path.basename(__file__))

@@ -90,7 +90,7 @@ class Launcher():
             self.mode = ['Expert', '30 16 99']
 
         self.save_settings()
-        os.system('game.py %s %s %s' % (self.themes_dropdown.currentText(), self.size_label.text(), self.mode[1]))
+        os.system(os.path.join(os.path.curdir, 'game.py') + ' ' + self.themes_dropdown.currentText() + ' ' + self.size_label.text() + ' ' + self.mode[1])
         self.win.show()
     
     def save_settings(self):
