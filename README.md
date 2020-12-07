@@ -13,4 +13,7 @@
 pip install -r requirements.txt
 ```
 
-* Now run **launcher.py** and enjoy.
+* Now run **launcher.py** and enjoy. Alternatively, you can just directly run **game.py**:
+```
+python game.py {theme} {block size (px)} {rows} {columns} {bombs}
+```
