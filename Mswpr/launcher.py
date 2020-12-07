@@ -60,7 +60,7 @@ class Launcher():
 
         self.slider = QSlider(Qt.Horizontal)
         self.slider.setRange(20, 80)
-        self.slider.valueChanged.connect(self.resize_tile)
+        self.slider.valueChanged.connect(self.resize_text)
 
         self.size_label = QLabel()
         self.size_label.setText(str(self.slider.value()))
@@ -126,7 +126,7 @@ class Launcher():
         else:
             self.beginner_radio.setChecked(True)
         
-    def resize_tile(self, value):
+    def resize_text(self, value):
         self.size_label.setText(str(value))
 
 Launcher()
