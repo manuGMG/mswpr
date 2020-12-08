@@ -140,7 +140,7 @@ class Game:
             self.check_events()
             self.render()
             if self.playing == True:
-                pygame.display.set_caption('Mswpr - Playing..')
+                pygame.display.set_caption('Mswpr')
             else:
                 pygame.display.set_caption('Mswpr - Press R to Restart')
             pygame.display.update()
