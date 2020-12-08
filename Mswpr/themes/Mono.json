@@ -1,0 +1,12 @@
+{
+    "bg_color": [14, 14, 14],
+    "border_color": [139, 139, 139],
+    "hidden_color": [70, 70, 70],
+    "hover_color": [171, 171, 171],
+    "text_color": [255, 255, 255],
+    "tile_one_color": [132, 132, 132],
+    "tile_two_color": [132, 132, 132],
+    "tile_three_color": [132, 132, 132],
+    "flag_color": [171, 171, 171],
+    "flag_text_color": [14, 14, 14]
+}

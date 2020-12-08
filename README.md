@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/manuGMG/mswpr/blob/main/preview.png?raw=true"></img>
+  <img src="https://github.com/manuGMG/mswpr/blob/main/preview.gif?raw=true"></img>
 </p>
 
 ## How to Play
