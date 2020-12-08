@@ -96,12 +96,15 @@ class Game:
     Launch mswpr
     '''
     def __init__(self, size, rows, cols, bombs):
+        # Screen
+        self.screen = pygame.display.set_mode((size*(rows+2), size*(cols+2)), pygame.DOUBLEBUF)
         # Vars
-        self.screen = pygame.display.set_mode((size*rows, size*(cols+1)), pygame.DOUBLEBUF)
         self.size = size
         self.rows = rows
         self.cols = cols
         self.bombs = bombs
+        self.marked_tiles = 0
+        self.best_time = 0
         # Import font
         self.font = pygame.font.Font(os.path.join(main_dir, 'res', 'VCR_OSD_MONO.ttf'), round(size/2))
         self.font_big = pygame.font.Font(os.path.join(main_dir, 'res', 'VCR_OSD_MONO.ttf'), round(size))
@@ -118,10 +121,10 @@ class Game:
         # Generate MS Board
         self.board = Board(self.rows, self.cols, self.bombs).generate()
         # Generate tiles
-        x = 0
+        x = 1
         tx = 0
         for rows in self.board:
-            y = 0
+            y = 1
             for val in rows:
                 if tx == self.cols:
                     x += 1
@@ -157,30 +160,44 @@ class Game:
                     elif event.button == 3:
                         for tile in tiles:
                             if tile.is_over(pygame.mouse.get_pos()):
-                                tile.mark()
+                                if self.bombs - self.marked_tiles > 0 or tile.marked == True:
+                                    tile.mark()
                 elif event.type == timer_event and self.playing == True:
                     self.time += .1
-        pass
 
         visible_tile_count = 0
+        self.marked_tiles = 0
         for tile in tiles:
             if tile.is_over(pygame.mouse.get_pos()):
                 tile.bg_color = hover_color
             if tile.hidden == False:
                 visible_tile_count += 1
+            if tile.marked == True and tile.hidden == True:
+                self.marked_tiles += 1
         
         if visible_tile_count == ((self.rows*self.cols)-self.bombs):
             self.playing = False
+            self.best_time = self.time if self.time > self.best_time else self.best_time
 
     def render(self):
+        self.screen.fill(bg_color)
+        # Tiles
         for tile in tiles:
             tile.draw(self.screen, self.font)
+        # Text
+        formatted_time = str(round(self.time, 2)) if self.time < 60 else time.strftime('%Mm %Ss', time.gmtime(self.time))
+        time_text = self.font_big.render(formatted_time, False, text_color)
+        self.screen.blit(time_text, (self.size, 0))
 
-        text = self.font_big.render(str(round(self.time, 2)) if self.time < 60 else time.strftime('%Mm,%Ss', time.gmtime(self.time)), False, text_color)
-        surface = pygame.Surface((self.size*self.rows, self.size))
-        surface.fill(bg_color)
-        surface.blit(text, (0, -2))
-        self.screen.blit(surface, (0, (self.size*self.cols+1)))
+        unmarked_tiles_text = self.font_big.render(str(self.bombs-self.marked_tiles), False, text_color)
+        self.screen.blit(unmarked_tiles_text, ((self.size*(self.rows+1))-unmarked_tiles_text.get_size()[0], 0))
+
+        if self.best_time != 0:
+            formatted_best_time = str(round(self.best_time, 2)) if self.best_time < 60 else time.strftime('%Mm %Ss', time.gmtime(self.best_time))
+        else:
+            formatted_best_time = '-'
+        best_time_text = self.font_big.render('Best: %s' % formatted_best_time, False, text_color)
+        self.screen.blit(best_time_text, (self.size, (self.size*(self.cols+1))))
         pass
 
 if __name__ == '__main__':

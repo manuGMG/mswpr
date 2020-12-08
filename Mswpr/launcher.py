@@ -28,6 +28,8 @@ class Launcher():
         grid.addWidget(play_button, 3, 0)
 
         self.win.setWindowIcon(QIcon(os.path.join(main_dir, 'res', '64x64-ico.png')))
+        self.win.setWindowFlags(self.win.windowFlags() & Qt.CustomizeWindowHint)
+        self.win.setWindowFlags(self.win.windowFlags() & ~Qt.WindowMinMaxButtonsHint)
         self.win.setFixedSize(0, 0)
         self.widget.setLayout(grid)
         self.win.show()
