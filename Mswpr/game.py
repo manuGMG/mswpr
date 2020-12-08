@@ -104,12 +104,13 @@ class Game:
         self.cols = cols
         self.bombs = bombs
         self.marked_tiles = 0
-        self.best_time = 0
+        self.best_time = -1
         # Import font
         self.font = pygame.font.Font(os.path.join(main_dir, 'res', 'VCR_OSD_MONO.ttf'), round(size/2))
         self.font_big = pygame.font.Font(os.path.join(main_dir, 'res', 'VCR_OSD_MONO.ttf'), round(size))
         # Main loop
         self.playing = True
+        self.lost = False
         self.time = 0
         # Set icon
         pygame.display.set_icon(pygame.image.load(os.path.join(main_dir, 'res', '64x64-ico.png')))
@@ -157,6 +158,7 @@ class Game:
                         for tile in tiles:
                             if tile.is_over(pygame.mouse.get_pos()):
                                 self.playing = True if tile.reveal() == True else False
+                                self.lost = True if self.playing == False else False
                     elif event.button == 3:
                         for tile in tiles:
                             if tile.is_over(pygame.mouse.get_pos()):
@@ -177,7 +179,11 @@ class Game:
         
         if visible_tile_count == ((self.rows*self.cols)-self.bombs):
             self.playing = False
-            self.best_time = self.time if self.time > self.best_time else self.best_time
+            if self.lost == False:
+                if self.best_time == -1:
+                    self.best_time = self.time
+                else:
+                    self.best_time = self.time if self.best_time > self.time else self.best_time
 
     def render(self):
         self.screen.fill(bg_color)
@@ -192,7 +198,7 @@ class Game:
         unmarked_tiles_text = self.font_big.render(str(self.bombs-self.marked_tiles), False, text_color)
         self.screen.blit(unmarked_tiles_text, ((self.size*(self.rows+1))-unmarked_tiles_text.get_size()[0], 0))
 
-        if self.best_time != 0:
+        if self.best_time != -1:
             formatted_best_time = str(round(self.best_time, 2)) if self.best_time < 60 else time.strftime('%Mm %Ss', time.gmtime(self.best_time))
         else:
             formatted_best_time = '-'
