@@ -10,8 +10,6 @@
 ## Features
 ⭐ Simple
 
-⭐ Lightweight *~100kb uncompiled*
-
 ⭐ Highly customizable
 
 ## How to Play
